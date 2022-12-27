@@ -44,10 +44,23 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+		// TODO: add
+		if(size >= array.length) {
+			T[] bigger = (T[]) new Object[array.length * 2];
+			System.arraycopy(array, 0, bigger, 0, array.length);
+			array = bigger;
+		}
+		array[size] = element;
+		size++;
+		return true;
 	}
-
+	// 항상 true를 반환하는데 왜 boolean 형인가?
+	/* 오라클 공식문서
+		컬렉션이 이미 요소를 포함하고 있다는 것 이외의 이유로 특정 요소 추가를 거부하는 경우
+		false 를 반환하는 대신 예외를 throw 해야 합니다.
+		이렇게 하면 이 호출이 반환된 후 컬렉션에 항상 지정된 요소가 포함된다는 불변성을 유지합니다.
+		+ 이 클래스의 경우 중복을 허용하기 때문에 false가 나오지 않는다.
+	 */
 	@Override
 	public void add(int index, T element) {
 		if (index < 0 || index > size) {
@@ -84,6 +97,7 @@ public class MyArrayList<T> implements List<T> {
 		// in the array, so it might delay garbage collection.
 		size = 0;
 	}
+	// 내부 데이터는 남아있고 size만 초기화
 
 	@Override
 	public boolean contains(Object obj) {
@@ -110,10 +124,16 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+		// TODO: indexOf
+		for (int i=0; i < size; i++) {
+			if(target==null ? get(i)==null : target.equals(get(i))) {
+				return i;
+			}
+		}
 		return -1;
 	}
-
+	// 0부터 시작, 없으면 -1
+	
 	/** Checks whether an element of the array is the target.
 	 *
 	 * Handles the special case that the target is null.
@@ -179,10 +199,31 @@ public class MyArrayList<T> implements List<T> {
 		return true;
 	}
 
+	/* 내가 푼거
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+		if( index < 0 || index >= size() ) {
+			throw new IndexOutOfBoundsException();
+		}
+		T temp = get(index);
+		for (int i=index; i < size-1; i++) {
+			array[i] = get(i+1);
+		}
+		size--;
+		return temp;
+	}
+	get()에 if(index < 0 || index >= size()) 이 로직이 포함되어 있어서 넣을 필요 없음
+	 */
+
+	@Override
+	public T remove(int index) {
+		// TODO: remove
+		T element = get(index);
+		for (int i=index; i<size-1; i++) {
+			array[i] = array[i+1];
+		}
+		size--;
+		return element;
 	}
 
 	@Override
@@ -199,11 +240,27 @@ public class MyArrayList<T> implements List<T> {
 		throw new UnsupportedOperationException();
 	}
 
+	/*
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+		T temp = array[index];
+		if(index < 0 || index >= size()) {
+			throw new IndexOutOfBoundsException();
+		}
+		array[index] = element;
+		return temp;
 	}
+	마찬가지로 if(index < 0 || index >= size()) 조건절 없어도 됨
+	*/
+
+	@Override
+	public T set(int index, T element) {
+		// TODO set
+		T old = get(index);
+		array[index] = element;
+		return old;
+	}
+
 
 	@Override
 	public int size() {
