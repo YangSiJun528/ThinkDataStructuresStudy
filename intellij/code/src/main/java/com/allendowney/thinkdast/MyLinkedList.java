@@ -82,7 +82,14 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		//TODO: FILL THIS IN!
+		//TODO: add
+		if(index == 0) {
+			head = new Node(element, head);
+		} else {
+			Node node = getNode(index-1);
+			node.next = new Node(element, node.next);
+		}
+		size++;
 	}
 
 	@Override
@@ -104,6 +111,14 @@ public class MyLinkedList<E> implements List<E> {
 		head = null;
 		size = 0;
 	}
+	/*
+	MyLinkedList() 클래스는 head와 size만 변수로 가지고 있다.
+	head가 아무것도 참조하고 있지 않게 되면
+	첫 번째 노드는 아무에게도 참조되지 않으니 가비지 컬렉션을 한다.
+	마찬가지로 나머지 node들도 가비지 컬렉션을 해서 전부 지워진다.
+	
+
+	 */
 
 	@Override
 	public boolean contains(Object obj) {
@@ -143,7 +158,12 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		//TODO: FILL THIS IN!
+		//TODO: indexOf
+		for (int i=0; i < size; i++) {
+			if(target==null ? get(i)==null : target.equals(get(i))) {
+				return i;
+			}
+		}
 		return -1;
 	}
 
@@ -206,10 +226,35 @@ public class MyLinkedList<E> implements List<E> {
 		return true;
 	}
 
+	/* 내가 푼거
 	@Override
 	public E remove(int index) {
-		//TODO: FILL THIS IN!
-		return null;
+		Node node = getNode(index);
+		if (index == 0) {
+			head = node.next;
+		} else {
+			getNode(index-1).next = node.next;
+		}
+		node.next = null;
+		size--;
+		return node.data;
+	}
+	연결 리스트 구현의 장점은 배열과는 달리 사용하지 않는 노드는 즉시 가비지 컬렌션이 될 수 있다는 것
+	clear()쪽 주석 참고
+	*/
+
+	@Override
+	public E remove(int index) {
+		//TODO: remove
+		E element = get(index);
+		if (index == 0) {
+			head = head.next;
+		} else {
+			Node node = getNode(index-1);
+			node.next = node.next.next;
+		}
+		size--;
+		return element;
 	}
 
 	@Override
