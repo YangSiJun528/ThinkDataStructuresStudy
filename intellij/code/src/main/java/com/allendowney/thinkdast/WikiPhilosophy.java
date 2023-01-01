@@ -40,6 +40,54 @@ public class WikiPhilosophy {
      * @throws IOException
      */
     public static void testConjecture(String destination, String source, int limit) throws IOException {
-        // TODO: FILL THIS IN!
+        // TODO: testConjecture - 아무리 생각해봐도 모르겠어서 동작 코드 먼저 봄...
+        // 글고 아무리 생각해봐도 이게 스택이랑 큰 상관이 없는거 같은데
+        String url = source;
+        for (int i = 0; i < limit; i++) {
+            if (visited.contains(url)) {  // 무한루프 방지
+                System.err.println("We're in a loop, exiting.");
+                return;
+            } else {
+                visited.add(url);
+            }
+            Element elt = getFirstValidLink(url);  //
+            if (elt == null) {
+                System.err.println("Got to a page with no valid links.");
+                return;
+            }
+
+            System.out.println("**" + elt.text() + "**");
+            url = elt.attr("abs:href");
+
+            if (url.equals(destination)) {
+                System.out.println("Eureka!");
+                break;
+            }
+        }
+    }
+
+    /**
+     * Loads and parses a URL, then extracts the first link.
+     *
+     * @param url
+     * @return the Element of the first link, or null.
+     * @throws IOException
+     */
+    public static Element getFirstValidLink(String url) throws IOException {
+        print("Fetching %s...", url);
+        Elements paragraphs = wf.fetchWikipedia(url); // Wiki 읽기
+        WikiParser wp = new WikiParser(paragraphs);
+        Element elt = wp.findFirstLink();
+        return elt;
+    }
+
+    /**
+     * Formats and print the arguments.
+     *
+     * @param msg
+     * @param args
+     */
+    private static void print(String msg, Object... args) {
+        System.out.println(String.format(msg, args));
     }
 }
