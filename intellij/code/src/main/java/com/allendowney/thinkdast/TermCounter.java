@@ -32,12 +32,17 @@ public class TermCounter {
 
 	/**
 	 * Returns the total of all counts.
+	 * 모든 counts의 총합 반환
 	 *
 	 * @return
 	 */
 	public int size() {
-		// TODO: FILL THIS IN!
-		return 0;
+		// TODO: size
+		int total = 0;
+		for(Integer value : map.values()) {
+			total += value;
+		}
+		return total;
 	}
 
 	/**
