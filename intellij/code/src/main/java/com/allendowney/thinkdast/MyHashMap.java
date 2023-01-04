@@ -20,6 +20,8 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	// average number of entries per map before we rehash
 	protected static final double FACTOR = 1.0;
 
+	//MyBetterMap의 maps를 상속받음 protected List<MyLinearMap<K, V>> maps;
+
 	@Override
 	public V put(K key, V value) {
 		V oldValue = super.put(key, value);
@@ -40,7 +42,20 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	 *
 	 */
 	protected void rehash() {
-		// TODO: FILL THIS IN!
+		// TODO: rehash
+		List<MyLinearMap<K, V>> oldMaps = maps;
+
+		makeMaps(maps.size() * 2);
+		// maps에 maps.size() * 2 길이의 List<MyLinearMap<K, V>> 추가
+
+		//System.out.println("Rehashing, n is now " + newN);
+
+		// put the entries into the new map
+		for (MyLinearMap<K, V> map: oldMaps) {
+			for (Map.Entry<K, V> entry: map.getEntries()) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
 	}
 
 	/**
