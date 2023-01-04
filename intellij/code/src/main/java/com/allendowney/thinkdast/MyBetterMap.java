@@ -28,6 +28,8 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	public MyBetterMap() {
 		makeMaps(2);
 	}
+	// 2개의 MyLinearMap - list<map<k,v>> 형태 - 를 생성해서
+	// MyBetterMap - list<list<map<k,v>>> -을 만듬
 
 	/**
 	 * Makes a collection of `k` MyLinearMap
@@ -40,6 +42,7 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 			maps.add(new MyLinearMap<K, V>());
 		}
 	}
+	// maps에 k개 만큼의 MyLinearMap를 가지는 ArrayList 추가
 
 	@Override
 	public void clear() {
@@ -63,14 +66,20 @@ public class MyBetterMap<K, V> implements Map<K, V> {
 	@Override
 	public boolean containsKey(Object target) {
 		// to find a key, we only have to search one map
-		// TODO: FILL THIS IN!
-		return false;
+		// TODO: containsKey
+		MyLinearMap<K,V> targetMap = chooseMap(target);
+		return targetMap.containsKey(target); // MyLinearMap의 containsKey() 실행
 	}
 
 	@Override
 	public boolean containsValue(Object target) {
 		// to find a value, we have to search all map
-		// TODO: FILL THIS IN!
+		// TODO: containsValue
+		for(MyLinearMap<K,V> map: maps) {
+			if(map.containsValue(target)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
